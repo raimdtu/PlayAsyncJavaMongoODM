@@ -6,10 +6,14 @@ Morphia and jongo both use syncronous java driver .
 
 Advantage :
 1.Marshalling and unmarshalling is done from directly Bson stream to object or vice-versa (Instead of convert from Bson to string then object)
+
 2.Mapping of document field and Object field using Annotation and Reflection
+
 using  three annotation https://github.com/raimdtu/PlayAsyncJavaMongoODM/tree/master/blogService/app/asynMongoODM/customannotations
 a>Id -Mapping b/w document id which is _id and object Id name
+
 b>FieldName - all field name except id mapping of object and document
+
 c>EnclosedGenericClass 
 why we need EnclosedGenericClass ?? 
 Because as we know in case of collection (ex List<String>) the actual object type is erased at compile time and we don't have information of actual type at runtime so during unmarshalling of bson (binary from of json) we cant read List<User> type of actual Object at runtime through reflection So for that case we need EnclosedGenericClass . 
@@ -24,16 +28,23 @@ Example :-
 3.For each Object class we read mapping of document and object just for first of their usage through reflection and kept it in memory so
 we need not read every time
 https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asynMongoODM/utils/ObjectAndDocumentFieldNameMappping.java
+
 https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asynMongoODM/utils/ObjectAndDocumentFieldNameMappping.java#L32
+
 https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asynMongoODM/utils/ObjectAndDocumentFieldNameMappping.java#L63
+
 4. To generically set or get property value of object we have used PropertyDescriptor https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asynMongoODM/utils/InvokeGetterSetter.java  
+
 5. Generic Custom Mongohandler which will give you result asynchronously
 https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asynMongoODM/utils/MongoHandler.java
+
 6.Define GenericCodec which has default implementation you just need to implement to your ObjectCodec as it  Marshall and unmarshall all object type
 https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asynMongoODM/codecs/GenericCodec.java
+
 If it is top document you just need to implement CollectibleCodec<User>,GenericCodec like
 https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asynMongoODM/codecs/UserCodec.java
 As it generate Id if it doesnot exist
+
 for inside document just need to implement Codec<Address>,GenericCodec like
 https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asynMongoODM/codecs/AddressCodec.java
 
@@ -41,12 +52,15 @@ you need to registed your codec to genricCodecprovider by
         if(clazz== Address.class){
             return (Codec<T>) new AddressCodec(registry);
         }
+        
 https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asynMongoODM/codecproviders/CustomCodecProvider.java
 
 
 MongoClientInstance which is singlton as single mongoClient contain no of connection also
 When creating multiple instances: All resource usage limits (max connections, etc) apply per MongoClient instance
 https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asynMongoODM/utils/MongoClientInstance.java
+
+
 for server cluster you need to just define it in application.conf 
 blogMongoDBServers=["localhost:27017"]
 
