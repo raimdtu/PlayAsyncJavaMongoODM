@@ -1,0 +1,10 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+GET           /blogService/ping                                   com.cementify.blogservice.controllers.BlogController.ping()
+
+GET           /blogService/test                                   com.cementify.blogservice.controllers.BlogController.test()
+
+
