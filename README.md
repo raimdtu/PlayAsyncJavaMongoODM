@@ -6,6 +6,9 @@ No mongo ODM has developed for java which usage Async Java driver.
 Morphia and jongo both use syncronous java driver .
 
 
+
+
+
 Advantage :
 
 1.Marshalling and unmarshalling is done from directly Bson stream to object or vice-versa (Instead of convert from Bson to string then object)
@@ -20,11 +23,14 @@ b>FieldName - all field name except id mapping of object and document
 
 c>EnclosedGenericClass 
 
+
 why we need EnclosedGenericClass ?? 
 
 Because as we know in case of collection (ex List<String>) the actual object type is erased at compile time and we don't have information of actual type at runtime so during unmarshalling of bson (binary from of json) .
 
 we cant read List<User> type of actual Object at runtime through reflection So for that case we need EnclosedGenericClass . 
+
+
 
 Example :-
 
@@ -50,14 +56,17 @@ https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asy
 https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asynMongoODM/utils/ObjectAndDocumentFieldNameMappping.java#L63
 
 
+
 4. To generically set or get property value of object we have used PropertyDescriptor
 
 https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asynMongoODM/utils/InvokeGetterSetter.java  
 
 
+
 5. Generic Custom Mongohandler which will give you result asynchronously
 
 https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asynMongoODM/utils/MongoHandler.java
+
 
 
 6.Define GenericCodec which has default implementation you just need to implement to your ObjectCodec as it  Marshall and unmarshall all object type
@@ -86,6 +95,9 @@ you need to registed your codec to genricCodecprovider by
 https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asynMongoODM/codecproviders/CustomCodecProvider.java
 
 
+
+
+
 MongoClientInstance which is singlton as single mongoClient contain no of connection also
 
 When creating multiple instances: All resource usage limits (max connections, etc) apply per MongoClient instance
@@ -93,9 +105,14 @@ When creating multiple instances: All resource usage limits (max connections, et
 https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asynMongoODM/utils/MongoClientInstance.java
 
 
+
+
 for server cluster you need to just define it in application.conf 
 
 blogMongoDBServers=["localhost:27017"]
+
+
+
 
 MongoClient Connection is closed as application is closed 
 
@@ -107,11 +124,16 @@ lifecycle.addStopHook(() -> {
                 
             });
 
+
+
+
 Also all the codec registry Including our(new CustomCodecProvider()) has been registered at
 
 https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asynMongoODM/utils/MongoClientInstance.java#L76
 
 Also MongoClientInstance  bind at https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/Module.java#L34
+
+
 
 so in your controller you just need to 
 
@@ -119,12 +141,19 @@ so in your controller you just need to
 
 MongoClientInstance mongoClientInstance;
 
+
+
+
 To map collection "col" of datatbase "testdb" to User object you need to define
 
 MongoCollection<User> collection=
 
                 mongoClientInstance.getMongoClient().getDatabase("testdb").getCollection("col",User.class);
                 
+
+
+
+
 
 Why we need to implement Bson to object in
 
@@ -135,11 +164,13 @@ As in java async driver all the filter are type of bson and If you want to use o
 Like all User whose name is x .
 
 
+
 You have two option 
 
 CompletionStage<?> completionStage=mongoHandler.readOneDocument(collection,eq("name","x"));
 
 In this case you need to use document name instead of object name .
+
 
 
 other option is
@@ -153,6 +184,10 @@ CompletionStage<?> completionStage=mongoHandler.readDocuments(collection, user1)
 In this case you need to just deal with object which is again awesome thing.
 
 
+
+
+
+
 Improvement :-
 
 All other MongoOperation need to be written in Mongohandler .
@@ -164,6 +199,9 @@ Join of Document at application level.
 All other type in generic codec.
 
 more Testing .
+
+
+
 
 
 
