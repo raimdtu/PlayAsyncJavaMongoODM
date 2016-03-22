@@ -23,13 +23,19 @@ Advantage :
 
 using  three annotation https://github.com/raimdtu/PlayAsyncJavaMongoODM/tree/master/blogService/app/asynMongoODM/customannotations
 
-a>Id -Mapping b/w document id which is _id and object Id name
+...
 
-b>FieldName - all field name except id mapping of object and document
+a> Id -Mapping b/w document id which is _id and object Id name
+
+...
+
+b> FieldName - all field name except id mapping of object and document
+
+...
 
 c>EnclosedGenericClass 
 
-.....
+...
 
 why we need EnclosedGenericClass ?? 
 
@@ -227,7 +233,8 @@ Improvement :-
 -> more Testing .
 
 
-...................
+.......................
+
 
 
 If you want to contribute or refactor or optimized or find Bug or use it you are most welcomed .
