@@ -73,13 +73,13 @@ https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asy
 
 ......
 
-4. To generically set or get property value of object we have used PropertyDescriptor
+4.To generically set or get property value of object we have used PropertyDescriptor
 
 https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asynMongoODM/utils/InvokeGetterSetter.java  
 
 .......
 
-5. Generic Custom Mongohandler which will give you result asynchronously
+5.Generic Custom Mongohandler which will give you result asynchronously
 
 https://github.com/raimdtu/PlayAsyncJavaMongoODM/blob/master/blogService/app/asynMongoODM/utils/MongoHandler.java
 
